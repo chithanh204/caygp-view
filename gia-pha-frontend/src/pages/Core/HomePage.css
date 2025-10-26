@@ -1,0 +1,120 @@
+.homepage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Nền màu xanh dương hiện đại (gradient) */
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* Header riêng của trang Home (cho người chưa đăng nhập) */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  background-color: transparent;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.home-logo {
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Link "Tài khoản" sẽ trỏ đến trang Đăng nhập */
+.home-account-link {
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+
+.home-account-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Phần nội dung chính */
+.home-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Canh lề trái giống trong hình */
+  align-items: flex-start;
+  padding: 0 10%;
+  /* Canh lề 2 bên */
+}
+
+.home-content h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.home-content p {
+  font-size: 1.2rem;
+  color: #e0e0e0;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.home-content .subtitle {
+  margin-bottom: 2.5rem;
+}
+
+/* Nút bấm */
+.home-actions {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.home-btn {
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 5px;
+  /* Giống trong hình */
+  transition: all 0.3s ease;
+}
+
+/* Nút Đăng kí */
+.btn-register {
+  background-color: white;
+  color: #007bff;
+  border: 2px solid white;
+}
+
+.btn-register:hover {
+  background-color: transparent;
+  color: white;
+}
+
+/* Nút Đăng nhập */
+.btn-login {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-login:hover {
+  background-color: white;
+  color: #007bff;
+}

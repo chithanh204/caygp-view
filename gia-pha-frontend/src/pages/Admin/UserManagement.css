@@ -1,0 +1,41 @@
+/* src/pages/Admin/UserManagement.css */
+.user-management-page {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  /* Giúp bo góc cho table */
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Gộp viền table */
+}
+
+.user-table th,
+.user-table td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Tiêu đề bảng */
+.user-table th {
+  background-color: #f8f8f8;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Nội dung các hàng */
+.user-table td {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.user-table tbody tr:hover {
+  background-color: #f5f5f5;
+}

@@ -1,0 +1,101 @@
+/* Dùng chung cho cả trang đăng nhập và đăng ký */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  /* Canh giữa màn hình */
+  background-color: #f9f9f9;
+  /* Màu nền trang web giả lập */
+}
+
+/* Chiếc hộp chứa form */
+.auth-form-box {
+  padding: 2.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  /* Bo góc */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 400px;
+  text-align: center;
+}
+
+.auth-form-box h1 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Form */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  /* Khoảng cách giữa các trường input */
+}
+
+.form-group {
+  text-align: left;
+  /* Canh lề trái cho label */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  /* Quan trọng để padding không làm vỡ layout */
+  font-size: 1rem;
+}
+
+/* CSS cho checkbox "Lưu Mật Khẩu"  */
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.form-options label {
+  margin-bottom: 0;
+  /* Ghi đè lại margin của .form-group label */
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+/* Nút bấm */
+.auth-button {
+  padding: 0.75rem;
+  background-color: #337ab7;
+  /* Màu xanh dương cơ bản */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.auth-button:hover {
+  background-color: #286090;
+}
+
+/* Các link điều hướng bên dưới */
+.auth-links {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.9rem;
+}

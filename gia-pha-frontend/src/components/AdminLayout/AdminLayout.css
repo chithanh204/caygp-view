@@ -1,0 +1,86 @@
+/* src/components/AdminLayout/AdminLayout.css */
+.admin-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f9f9f9;
+}
+
+/* Header riêng của Admin */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  height: 60px;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+  /* Không co lại */
+}
+
+.admin-logo {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #333;
+}
+
+.admin-account {
+  font-weight: 500;
+}
+
+/* Bố cục chính (sidebar + content) */
+.admin-container {
+  display: flex;
+  flex-grow: 1;
+  /* Chiếm hết chiều cao còn lại */
+  overflow: hidden;
+  /* Ngăn cuộn ở cấp này */
+}
+
+/* Sidebar */
+.admin-sidebar {
+  flex-basis: 220px;
+  /* Cố định chiều rộng sidebar */
+  flex-shrink: 0;
+  background-color: #fff;
+  border-right: 1px solid #e0e0e0;
+  padding: 1.5rem 0;
+}
+
+.admin-sidebar nav {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Các link trong sidebar */
+.admin-sidebar nav a {
+  padding: 0.85rem 1.5rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+  /* Tạo hiệu ứng active */
+}
+
+.admin-sidebar nav a:hover {
+  background-color: #f5f5f5;
+}
+
+/* Link đang active */
+.admin-sidebar nav a.active {
+  color: #007bff;
+  font-weight: 600;
+  background-color: #e6f7ff;
+  border-left-color: #007bff;
+}
+
+/* Vùng nội dung */
+.admin-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  /* Cho phép cuộn nội dung nếu dài */
+}

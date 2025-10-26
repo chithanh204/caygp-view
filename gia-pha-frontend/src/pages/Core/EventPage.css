@@ -1,0 +1,112 @@
+.event-page-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 2rem auto;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+/* Cột Lịch */
+.calendar-container {
+  flex-basis: 70%;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Tùy chỉnh CSS cho react-calendar */
+.react-calendar {
+  width: 100%;
+  border: none;
+  /* Bỏ viền mặc định */
+  font-family: inherit;
+}
+
+/* Nút bấm tháng/năm */
+.react-calendar__navigation button {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Tiêu đề các ngày trong tuần (T2, T3...) */
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* Các ô ngày */
+.react-calendar__tile {
+  height: 90px;
+  /* Tăng chiều cao ô */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+/* Ô được chọn */
+.react-calendar__tile--active {
+  background: #007bff;
+  color: white;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #0056b3;
+}
+
+/* Hôm nay */
+.react-calendar__tile--now {
+  background: #e6f7ff;
+}
+
+/* Cột Chi tiết sự kiện */
+.event-details-panel {
+  flex-basis: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.event-list-box {
+  flex-grow: 1;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  min-height: 300px;
+}
+
+.event-list-box h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.event-list-box .event-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.event-list-box .no-events {
+  color: #777;
+}
+
+.add-event-btn {
+  padding: 0.75rem;
+  background-color: #337ab7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-event-btn:hover {
+  background-color: #286090;
+}

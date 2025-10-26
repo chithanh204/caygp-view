@@ -1,0 +1,86 @@
+/* src/pages/Core/CreateTreePage.css */
+.create-tree-page {
+  width: 100%;
+  height: calc(100vh - 60px - 2rem);
+  /* Chiều cao trừ đi navbar và padding */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f7f7;
+  padding: 1rem;
+  overflow: auto;
+  /* Cho phép cuộn nếu cây to */
+  position: relative;
+  /* Để định vị context menu */
+}
+
+/* Nút tạo cây ban đầu */
+.create-node-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 120px;
+  border: 2px dashed #aaa;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: background-color 0.3s;
+}
+
+.create-node-box:hover {
+  background-color: #fdfdfd;
+  border-color: #007bff;
+}
+
+.create-node-box .plus-icon {
+  font-size: 3rem;
+  color: #aaa;
+}
+
+.create-node-box span {
+  font-size: 1.1rem;
+  color: #555;
+  margin-top: 0.5rem;
+}
+
+/* CSS để giả lập cây (sử dụng flexbox) */
+.tree-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  /* Khoảng cách giữa các thế hệ */
+}
+
+.tree-tier {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  /* Khoảng cách giữa các nút cùng thế hệ */
+}
+
+/* CSS cho 1 nút (node) */
+.tree-node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.tree-node img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tree-node span {
+  font-weight: 600;
+}

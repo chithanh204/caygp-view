@@ -1,0 +1,140 @@
+.edit-member-page {
+  display: flex;
+  max-width: 1000px;
+  margin: 2rem auto;
+  /* Canh giữa trang */
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  gap: 2.5rem;
+  /* Khoảng cách giữa 2 cột */
+}
+
+/* Cột trái: Ảnh đại diện */
+.edit-member-avatar {
+  flex-basis: 250px;
+  /* Cố định chiều rộng cột trái */
+  text-align: center;
+}
+
+.avatar-preview {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  /* Bo tròn ảnh */
+  object-fit: cover;
+  border: 3px solid #eee;
+  margin-bottom: 1rem;
+}
+
+.avatar-change-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.avatar-change-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Ẩn input[type=file] mặc định */
+.edit-member-avatar input[type="file"] {
+  display: none;
+}
+
+/* Cột phải: Form thông tin */
+.edit-member-form {
+  flex-grow: 1;
+  /* Cột phải chiếm hết phần còn lại */
+}
+
+.edit-member-form h1 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.edit-member-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.form-group {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  width: 100%;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-group textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+  /* Nút bấm dồn về bên phải */
+}
+
+.form-actions button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-save {
+  background-color: #337ab7;
+  color: white;
+}
+
+.btn-save:hover {
+  background-color: #286090;
+}
+
+.btn-cancel {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.btn-cancel:hover {
+  background-color: #e0e0e0;
+}
