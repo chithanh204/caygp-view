@@ -75,6 +75,7 @@
   justify-content: center;
   min-height: 180px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
 .tree-card:hover {
@@ -252,4 +253,32 @@
   text-align: center;
   color: white;
   margin-top: 50px;
+}
+
+.delete-tree-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #ccc;
+  /* Màu nhạt để không rối mắt */
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  z-index: 5;
+  /* Đảm bảo nằm trên */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-tree-btn:hover {
+  background-color: #ffe6e6;
+  /* Nền đỏ nhạt khi hover */
+  color: #dc3545;
+  /* Icon đỏ đậm */
+  transform: scale(1.2);
 }

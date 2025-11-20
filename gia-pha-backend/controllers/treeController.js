@@ -1,4 +1,6 @@
 const FamilyTree = require('../models/FamilyTree');
+const Member = require('../models/Member');
+const Event = require('../models/Event');
 
 // 1. Tạo cây gia phả mới
 exports.createTree = async (req, res) => {
@@ -41,5 +43,32 @@ exports.getTreeById = async (req, res) => {
     res.json(tree);
   } catch (error) {
     res.status(500).json({ message: 'Lỗi server', error: error.message });
+  }
+};
+
+exports.deleteTree = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Kiểm tra xem cây có tồn tại và có phải của user này không
+    const tree = await FamilyTree.findOne({ _id: id, ownerId: req.user.id });
+
+    if (!tree) {
+      return res.status(404).json({ message: 'Không tìm thấy cây hoặc bạn không có quyền xóa' });
+    }
+
+    // --- QUAN TRỌNG: Xóa sạch dữ liệu liên quan ---
+    // 1. Xóa tất cả thành viên thuộc cây này
+    await Member.deleteMany({ treeId: id });
+
+    // 2. Xóa tất cả sự kiện thuộc cây này
+    await Event.deleteMany({ treeId: id });
+
+    // 3. Cuối cùng xóa cây
+    await tree.deleteOne();
+
+    res.json({ message: 'Đã xóa cây gia phả và toàn bộ dữ liệu liên quan' });
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi xóa cây', error: error.message });
   }
 };

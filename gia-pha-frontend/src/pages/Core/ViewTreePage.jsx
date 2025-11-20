@@ -4,6 +4,7 @@ import './ViewTreePage.css';
 import apiClient from '../../services/api';
 import ShareModal from '../../components/ShareModal/ShareModal';
 import RelationshipPanel from '../../components/RelationshipPanel/RelationshipPanel';
+import { FaTrash } from 'react-icons/fa';
 
 function ViewTreePage() {
   const { treeId } = useParams();
@@ -122,6 +123,24 @@ function ViewTreePage() {
     );
   };
 
+  // eslint-disable-next-line no-unused-vars
+  const handleDeleteTree = async (e, treeId) => {
+    // QUAN TRỌNG: Ngăn chặn sự kiện nổi bọt (Bubbling)
+    // Nếu không có dòng này, khi bấm xóa nó sẽ kích hoạt cả onClick của thẻ cha -> Chuyển trang
+    e.stopPropagation();
+
+    if (window.confirm("CẢNH BÁO: Bạn có chắc chắn muốn xóa cây gia phả này?\nTất cả thành viên và sự kiện liên quan sẽ bị xóa vĩnh viễn!")) {
+      try {
+        await apiClient.delete(`/trees/${treeId}`);
+        alert("Đã xóa thành công!");
+        // Tải lại danh sách để cập nhật giao diện
+        fetchMyTrees();
+      } catch (error) {
+        console.error("Lỗi xóa cây:", error);
+        alert("Có lỗi xảy ra khi xóa cây.");
+      }
+    }
+  };
 
   // --- GIAO DIỆN CHÍNH ---
   if (loading) return <div className="loading-text">Đang tải dữ liệu...</div>;
@@ -142,6 +161,13 @@ function ViewTreePage() {
 
             {myTrees.map(tree => (
               <div key={tree._id} className="tree-card" onClick={() => navigate(`/view-tree/${tree._id}`)}>
+                <button
+                  className="delete-tree-btn"
+                  onClick={(e) => handleDeleteTree(e, tree._id)}
+                  title="Xóa cây này"
+                >
+                  <FaTrash />
+                </button>
                 <div className="tree-icon">🌳</div>
                 <div className="tree-info">
                   <h3>{tree.name}</h3>
