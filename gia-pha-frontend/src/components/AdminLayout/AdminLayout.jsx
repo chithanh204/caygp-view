@@ -22,7 +22,7 @@ function AdminLayout() {
         <aside className="admin-sidebar">
           <nav>
             {/* Dùng NavLink để tự động có class 'active' khi link được chọn */}
-            <NavLink to="/">Trang web</NavLink>
+            <NavLink to="/admin/dashboard">Trang web</NavLink>
             <NavLink to="/admin/users">Người dùng</NavLink>
             <NavLink to="/admin/roles">Vai trò</NavLink>
             <NavLink to="/admin/events">Quản lý sự kiện</NavLink>

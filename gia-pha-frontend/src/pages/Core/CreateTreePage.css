@@ -1,86 +1,228 @@
 /* src/pages/Core/CreateTreePage.css */
+
 .create-tree-page {
   width: 100%;
-  height: calc(100vh - 60px - 2rem);
-  /* Chiều cao trừ đi navbar và padding */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f7f7f7;
-  padding: 1rem;
+  /* Trừ đi chiều cao Navbar */
+  height: calc(100vh - 60px);
+  padding: 50px;
+
+  /* QUAN TRỌNG: Để background transparent (trong suốt) để lộ nền Gradient toàn cục */
+  background: transparent;
+
   overflow: auto;
-  /* Cho phép cuộn nếu cây to */
+  /* Cho phép cuộn ngang/dọc khi cây quá to */
+  text-align: center;
+
+  /* Căn giữa nội dung lúc bắt đầu */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* --- Cấu trúc Cây (CSS Tree Structure) --- */
+.tree {
+  white-space: nowrap;
+  /* Giữ các nút trên cùng 1 dòng, không xuống dòng */
+  padding-bottom: 100px;
+  /* Khoảng trống dưới cùng để không bị mất nút */
+}
+
+.tree ul {
+  padding-top: 20px;
   position: relative;
-  /* Để định vị context menu */
-}
-
-/* Nút tạo cây ban đầu */
-.create-node-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 200px;
-  height: 120px;
-  border: 2px dashed #aaa;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: #fff;
-  transition: background-color 0.3s;
-}
-
-.create-node-box:hover {
-  background-color: #fdfdfd;
-  border-color: #007bff;
-}
-
-.create-node-box .plus-icon {
-  font-size: 3rem;
-  color: #aaa;
-}
-
-.create-node-box span {
-  font-size: 1.1rem;
-  color: #555;
-  margin-top: 0.5rem;
-}
-
-/* CSS để giả lập cây (sử dụng flexbox) */
-.tree-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 50px;
-  /* Khoảng cách giữa các thế hệ */
-}
-
-.tree-tier {
+  transition: all 0.5s;
   display: flex;
   justify-content: center;
-  gap: 30px;
-  /* Khoảng cách giữa các nút cùng thế hệ */
 }
 
-/* CSS cho 1 nút (node) */
-.tree-node {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.tree li {
+  float: left;
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  padding: 20px 10px 0 10px;
+  /* Tăng padding ngang để các nhánh không dính nhau */
+  transition: all 0.5s;
+}
+
+/* --- Vẽ đường nối (Connectors) --- */
+/* Dùng màu trắng hoặc xám đậm tùy bạn thích. Ở đây mình dùng trắng mờ cho hiện đại */
+.tree li::before,
+.tree li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 50%;
+  border-top: 2px solid rgba(255, 255, 255, 0.7);
+  /* Đường kẻ ngang */
+  width: 50%;
+  height: 20px;
+}
+
+.tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 2px solid rgba(255, 255, 255, 0.7);
+  /* Đường kẻ dọc xuống */
+}
+
+/* Xóa đường nối thừa ở nút đầu và cuối */
+.tree li:only-child::after,
+.tree li:only-child::before {
+  display: none;
+}
+
+.tree li:only-child {
+  padding-top: 0;
+}
+
+.tree li:first-child::before,
+.tree li:last-child::after {
+  border: 0 none;
+}
+
+.tree li:last-child::before {
+  border-right: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 0 5px 0 0;
+}
+
+.tree li:first-child::after {
+  border-radius: 5px 0 0 0;
+}
+
+/* Đường nối từ cha xuống danh sách con */
+.tree ul ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 2px solid rgba(255, 255, 255, 0.7);
+  width: 0;
+  height: 20px;
+}
+
+/* --- Thẻ Thành viên (Member Card) - GLASS STYLE --- */
+.member-card {
+  /* Hiệu ứng thẻ kính */
+  background: rgba(255, 255, 255, 0.85);
+  /* Nền trắng đục */
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+
   padding: 10px;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: #333;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+
+  display: inline-flex;
+  /* Flex để ảnh và tên thẳng cột */
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 100px;
+  position: relative;
+  z-index: 2;
+  /* Nổi lên trên đường kẻ */
   cursor: pointer;
+  transition: all 0.3s;
+
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.tree-node img {
+/* Hiệu ứng Hover */
+.member-card:hover {
+  background: #fff;
+  transform: scale(1.05);
+  /* Phóng to nhẹ */
+  border-color: #007bff;
+  box-shadow: 0 8px 15px rgba(0, 123, 255, 0.2);
+  z-index: 10;
+}
+
+/* --- SỬA LỖI ẢNH AVATAR --- */
+.member-card img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  /* Tròn vo */
+
+  /* QUAN TRỌNG: Giúp ảnh không bị méo dù ảnh gốc hình chữ nhật */
   object-fit: cover;
+
+  margin-bottom: 8px;
+  border: 2px solid #fff;
+  /* Viền trắng quanh ảnh */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  /* Màu nền cho ảnh nếu chưa tải xong (tránh bị trong suốt xấu xí) */
+  background-color: #ddd;
 }
 
-.tree-node span {
-  font-weight: 600;
+/* --- Xử lý Vợ/Chồng (Nằm ngang) --- */
+.spouse-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  /* Khoảng cách rộng hơn chút để nhìn rõ đường nối */
+  position: relative;
+}
+
+/* Đường nối ngang Tình Yêu giữa Vợ - Chồng */
+.spouse-connector {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff4d4f, transparent);
+  /* Hiệu ứng mờ 2 đầu */
+  width: 40px;
+  /* Chiều dài đường nối */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  /* Nằm dưới thẻ member */
+}
+
+/* Thêm trái tim nhỏ ở giữa đường nối vợ chồng */
+.spouse-connector::after {
+  content: '❤';
+  color: #ff4d4f;
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+}
+
+/* --- Box Tạo Nút Gốc (Khi chưa có cây) --- */
+.create-node-box {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  border: 2px dashed white;
+  color: white;
+  border-radius: 16px;
+  width: 180px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 100px;
+}
+
+.create-node-box:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: #007bff;
+  border-color: #007bff;
+  transform: scale(1.1);
+}
+
+.create-node-box span {
+  font-weight: 700;
+  font-size: 1.1rem;
 }

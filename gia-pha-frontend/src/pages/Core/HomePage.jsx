@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css'; // Import file CSS mới
-import { FaUserCircle } from 'react-icons/fa'; // Dùng icon cho đẹp (đã cài ở bước trước)
+import { FaUserCircle } from 'react-icons/fa';
+import logo from '../../assets/logo.png';
 
 function HomePage() {
   return (
@@ -12,8 +13,8 @@ function HomePage() {
       */}
       <header className="home-header">
         <Link to="/" className="home-logo">
-          <span>(Logo)</span>
-          Cây Gia Phả
+          <img src={logo} alt="Logo" className="homepage-logo-img" />
+          <span>Cây Gia Phả</span>
         </Link>
         <Link to="/login" className="home-account-link">
           <FaUserCircle />

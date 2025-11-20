@@ -1,101 +1,104 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import './EditMemberPage.css';
-
-// ----- Dữ liệu giả lập -----
-const mockDatabase = {
-  p1: { hoTen: 'Adolf Hitler', gioiTinh: 'Nam', ngaySinh: '1889-04-20', ngayMat: '1945-04-30', nguyenQuan: 'Braunau am Inn, Áo-Hung', tieuSu: '...', avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Adolf_Hitler_portrait_in_civilian_clothes.jpg' },
-  p2: { hoTen: 'Bill Gates', gioiTinh: 'Nam', ngaySinh: '1955-10-28', ngayMat: '', nguyenQuan: 'Seattle, Washington, Hoa Kỳ', tieuSu: 'Đồng sáng lập Microsoft.', avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Bill_Gates_2017_%28cropped%29.jpg' },
-  p3: { hoTen: 'Elon Musk', gioiTinh: 'Nam', ngaySinh: '1971-06-28', ngayMat: '', nguyenQuan: 'Pretoria, Nam Phi', tieuSu: 'CEO của SpaceX, Tesla, và X.', avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg' },
-  p4: { hoTen: 'Warren Buffett', gioiTinh: 'Nam', ngaySinh: '1930-08-30', ngayMat: '', nguyenQuan: 'Omaha, Nebraska, Hoa Kỳ', tieuSu: 'Nhà đầu tư huyền thoại.', avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Warren_Buffett_at_the_2015_SelectUSA_Investment_Summit_%28cropped%29.jpg' },
-};
-
-// Hàm giả lập fetch data
-const fetchMemberData = (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockDatabase[id]);
-    }, 500); // Giả lập 0.5s loading
-  });
-};
-// ------------------------------
-
+import apiClient from '../../services/api'; // Import API
 
 function EditMemberPage() {
-  const { memberId } = useParams(); // Lấy ID từ URL (VD: "new" hoặc "p2")
+  const { memberId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
+  // Lấy treeId từ URL (ví dụ: /edit-member/new?treeId=12345...)
+  const treeId = searchParams.get('treeId');
   const isEditMode = memberId !== 'new';
+  const relationType = searchParams.get('type'); // 'spouse' hoặc 'child'
+  const relatedId = searchParams.get('relatedId');
 
-  // State cho tất cả các trường trong form
+  // State Form
   const [hoTen, setHoTen] = useState('');
   const [gioiTinh, setGioiTinh] = useState('Nam');
   const [ngaySinh, setNgaySinh] = useState('');
   const [ngayMat, setNgayMat] = useState('');
   const [nguyenQuan, setNguyenQuan] = useState('');
   const [tieuSu, setTieuSu] = useState('');
-  const [avatarPreview, setAvatarPreview] = useState('https://via.placeholder.com/200'); // Ảnh mặc định
-  const [avatarFile, setAvatarFile] = useState(null); // File ảnh thật để upload
+  const [avatarPreview, setAvatarPreview] = useState('https://via.placeholder.com/200');
 
-  // Tải dữ liệu khi trang được mở
+  // Tải dữ liệu (nếu là chế độ Sửa)
   useEffect(() => {
     if (isEditMode) {
-      // Chế độ "Sửa" -> Tải dữ liệu
-      const loadData = async () => {
-        const data = await fetchMemberData(memberId);
-        if (data) {
-          setHoTen(data.hoTen);
-          setGioiTinh(data.gioiTinh);
-          setNgaySinh(data.ngaySinh || '');
-          setNgayMat(data.ngayMat || '');
-          setNguyenQuan(data.nguyenQuan);
-          setTieuSu(data.tieuSu);
-          setAvatarPreview(data.avatarUrl);
-        } else {
-          console.error("Không tìm thấy thành viên!");
-          navigate('/create-tree'); // Không tìm thấy thì quay về trang cây
+      const fetchMember = async () => {
+        try {
+          const res = await apiClient.get(`/members/${memberId}`);
+          const data = res.data;
+
+          setHoTen(data.fullName);
+          setGioiTinh(data.gender);
+          // Cần format ngày tháng cho input date (YYYY-MM-DD)
+          setNgaySinh(data.dateOfBirth ? data.dateOfBirth.split('T')[0] : '');
+          setNgayMat(data.dateOfDeath ? data.dateOfDeath.split('T')[0] : '');
+          setNguyenQuan(data.placeOfOrigin);
+          setTieuSu(data.bio);
+          if (data.avatarUrl) {
+            setAvatarPreview(data.avatarUrl);
+          }
+        } catch (error) {
+          console.error("Lỗi tải dữ liệu:", error);
+          alert("Không tìm thấy thành viên");
         }
       };
-      loadData();
-    } else {
-      // Chế độ "Tạo mới" -> Xóa trống form
-      setHoTen('');
-      setGioiTinh('Nam');
-      setNgaySinh('');
-      setNgayMat('');
-      setNguyenQuan('');
-      setTieuSu('');
-      setAvatarPreview('https://via.placeholder.com/200');
-      setAvatarFile(null);
+      fetchMember();
     }
-  }, [memberId, isEditMode, navigate]);
-
-  // Xử lý khi chọn ảnh
-  const handleAvatarChange = (e) => {
+  }, [memberId, isEditMode]);
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setAvatarFile(file); // Lưu file
-      setAvatarPreview(URL.createObjectURL(file)); // Hiển thị preview
+      // Tạo một đường dẫn giả (URL tạm thời) để hiển thị ảnh ngay lập tức
+      const objectUrl = URL.createObjectURL(file);
+      setAvatarPreview(objectUrl); // <--- Dùng hàm setAvatarPreview ở đây là hết lỗi!
+
+      // TODO: Sau này bạn sẽ cần lưu file này vào một state khác để gửi lên server
+      // setAvatarFile(file); 
     }
   };
-
-  // Xử lý khi bấm nút "Lưu"
-  const handleSubmit = (e) => {
+  // Xử lý Lưu
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = {
-      hoTen, gioiTinh, ngaySinh, ngayMat, nguyenQuan, tieuSu, avatarFile
+
+    const memberData = {
+      fullName: hoTen,
+      gender: gioiTinh,
+      dateOfBirth: ngaySinh,
+      dateOfDeath: ngayMat || null, // Nếu rỗng thì gửi null
+      placeOfOrigin: nguyenQuan,
+      bio: tieuSu,
+      treeId: treeId, // Gắn người này vào cây nào
+      relationType: isEditMode ? undefined : relationType,
+      relatedId: isEditMode ? undefined : relatedId
     };
 
-    if (isEditMode) {
-      console.log('Đang cập nhật thành viên:', memberId, formData);
-      // TODO: Gọi API PUT/PATCH để cập nhật
-    } else {
-      console.log('Đang tạo thành viên mới:', formData);
-      // TODO: Gọi API POST để tạo mới
-    }
+    try {
+      if (isEditMode) {
+        // --- GỌI API SỬA ---
+        await apiClient.put(`/members/${memberId}`, memberData);
+        alert("Cập nhật thành công!");
+      } else {
+        // --- GỌI API THÊM MỚI ---
+        if (!treeId) {
+          alert("Lỗi: Không xác định được Cây gia phả!");
+          return;
+        }
+        await apiClient.post('/members', memberData);
+        alert("Thêm thành công!");
+      }
 
-    // Sau khi lưu, quay về trang cây
-    navigate('/create-tree');
+      // Lưu xong thì quay về trang xem cây
+      // (Lúc này ta chưa có trang ViewTree hoàn chỉnh, nhưng cứ điều hướng về đó hoặc trang CreateTree)
+      navigate('/create-tree');
+
+    } catch (error) {
+      console.error("Lỗi lưu dữ liệu:", error);
+      alert("Có lỗi xảy ra khi lưu.");
+    }
   };
 
   return (
@@ -103,14 +106,16 @@ function EditMemberPage() {
       {/* CỘT TRÁI: AVATAR */}
       <div className="edit-member-avatar">
         <img src={avatarPreview} alt="Avatar preview" className="avatar-preview" />
-        <label htmlFor="avatar-upload" className="avatar-change-btn">
-          Thay ảnh
-        </label>
+
+        <label htmlFor="avatar-upload" className="avatar-change-btn">Thay ảnh</label>
+
+        {/* Thêm sự kiện onChange và id khớp với htmlFor của label */}
         <input
           type="file"
           id="avatar-upload"
+          style={{ display: 'none' }} // Ẩn input 
           accept="image/*"
-          onChange={handleAvatarChange}
+          onChange={handleFileChange}
         />
       </div>
 
@@ -119,15 +124,14 @@ function EditMemberPage() {
         <h1>{isEditMode ? 'Chỉnh sửa thông tin' : 'Tạo thành viên mới'}</h1>
 
         <form onSubmit={handleSubmit}>
-          {/* Hàng 1: Họ tên + Giới tính */}
           <div className="form-row">
             <div className="form-group" style={{ flexBasis: '70%' }}>
-              <label htmlFor="hoTen">Họ & Tên</label>
-              <input type="text" id="hoTen" value={hoTen} onChange={(e) => setHoTen(e.target.value)} required />
+              <label>Họ & Tên</label>
+              <input type="text" value={hoTen} onChange={(e) => setHoTen(e.target.value)} required />
             </div>
             <div className="form-group" style={{ flexBasis: '30%' }}>
-              <label htmlFor="gioiTinh">Giới Tính</label>
-              <select id="gioiTinh" value={gioiTinh} onChange={(e) => setGioiTinh(e.target.value)}>
+              <label>Giới Tính</label>
+              <select value={gioiTinh} onChange={(e) => setGioiTinh(e.target.value)}>
                 <option value="Nam">Nam</option>
                 <option value="Nữ">Nữ</option>
                 <option value="Khác">Khác</option>
@@ -135,38 +139,30 @@ function EditMemberPage() {
             </div>
           </div>
 
-          {/* Hàng 2: Ngày sinh + Ngày mất */}
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="ngaySinh">Ngày Sinh</label>
-              <input type="date" id="ngaySinh" value={ngaySinh} onChange={(e) => setNgaySinh(e.target.value)} />
+              <label>Ngày Sinh</label>
+              <input type="date" value={ngaySinh} onChange={(e) => setNgaySinh(e.target.value)} />
             </div>
             <div className="form-group">
-              <label htmlFor="ngayMat">Ngày mất / Ngày giỗ</label>
-              <input type="date" id="ngayMat" value={ngayMat} onChange={(e) => setNgayMat(e.target.value)} />
+              <label>Ngày mất / Ngày giỗ</label>
+              <input type="date" value={ngayMat} onChange={(e) => setNgayMat(e.target.value)} />
             </div>
           </div>
 
-          {/* Hàng 3: Nguyên quán */}
           <div className="form-group full-width">
-            <label htmlFor="nguyenQuan">Nguyên Quán</label>
-            <input type="text" id="nguyenQuan" value={nguyenQuan} onChange={(e) => setNguyenQuan(e.target.value)} />
+            <label>Nguyên Quán</label>
+            <input type="text" value={nguyenQuan} onChange={(e) => setNguyenQuan(e.target.value)} />
           </div>
 
-          {/* Hàng 4: Tiểu sử */}
           <div className="form-group full-width">
-            <label htmlFor="tieuSu">Tiểu Sử</label>
-            <textarea id="tieuSu" value={tieuSu} onChange={(e) => setTieuSu(e.target.value)} />
+            <label>Tiểu Sử</label>
+            <textarea value={tieuSu} onChange={(e) => setTieuSu(e.target.value)} />
           </div>
 
-          {/* Hàng 5: Nút bấm */}
           <div className="form-actions">
-            <button type="button" className="btn-cancel" onClick={() => navigate('/create-tree')}>
-              Hủy
-            </button>
-            <button type="submit" className="btn-save">
-              Lưu
-            </button>
+            <button type="button" className="btn-cancel" onClick={() => navigate('/create-tree')}>Hủy</button>
+            <button type="submit" className="btn-save">Lưu</button>
           </div>
         </form>
       </div>

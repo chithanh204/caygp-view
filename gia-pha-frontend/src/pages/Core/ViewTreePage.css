@@ -1,77 +1,255 @@
 /* src/pages/Core/ViewTreePage.css */
+
 .view-tree-page {
-  /* Copy style từ CreateTreePage để đồng bộ */
   width: 100%;
-  height: calc(100vh - 60px - 2rem);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f7f7f7;
-  padding: 1rem;
+  height: calc(100vh - 60px);
+  padding: 20px;
+  background: transparent;
+  /* Lộ nền Gradient */
   overflow: auto;
-  position: relative;
 }
 
-/* Toolbar cho các nút bấm */
+/* --- Toolbar --- */
 .view-tree-toolbar {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  position: fixed;
+  /* Ghim góc phải */
+  top: 80px;
+  right: 20px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  z-index: 10;
+  gap: 10px;
+  z-index: 100;
 }
 
 .view-tree-toolbar button {
   padding: 0.6rem 1rem;
-  background-color: #fff;
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
-  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
 }
 
 .view-tree-toolbar button:hover {
-  background-color: #f8f8f8;
+  transform: translateX(-5px);
 }
 
-/* ----- CSS Cây gia phả (Copy từ CreateTreePage.css) ----- */
-.tree-container {
+/* --- Mode 1: Dashboard (Chọn cây) --- */
+.dashboard-mode {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 3rem;
+}
+
+.tree-selection-box {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 900px;
+  max-width: 95%;
+  text-align: center;
+}
+
+.tree-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.tree-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid #eee;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
+  justify-content: center;
+  min-height: 180px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.tree-tier {
+.tree-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.tree-card.create-new {
+  border: 2px dashed #007bff;
+  background: rgba(0, 123, 255, 0.05);
+}
+
+.plus-icon {
+  font-size: 3rem;
+  color: #007bff;
+}
+
+.tree-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.tree-info h3 {
+  font-size: 1.1rem;
+  margin: 0 0 5px;
+}
+
+.tree-info p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* --- Mode 2: Xem Cây (Copy từ CreateTreePage.css sang) --- */
+.tree-wrapper {
   display: flex;
   justify-content: center;
-  gap: 30px;
+  padding-bottom: 100px;
+  margin-top: 40px;
 }
 
-.tree-node {
+.tree {
+  white-space: nowrap;
+}
+
+.tree ul {
+  padding-top: 20px;
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  /* Bỏ cursor pointer vì đây là trang view-only */
-  /* cursor: pointer; */
+  justify-content: center;
 }
 
-.tree-node img {
+.tree li {
+  float: left;
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  padding: 20px 10px 0 10px;
+}
+
+/* Đường nối (Connectors) */
+.tree li::before,
+.tree li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 50%;
+  border-top: 2px solid rgba(255, 255, 255, 0.7);
+  width: 50%;
+  height: 20px;
+}
+
+.tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.tree li:only-child::after,
+.tree li:only-child::before {
+  display: none;
+}
+
+.tree li:only-child {
+  padding-top: 0;
+}
+
+.tree li:first-child::before,
+.tree li:last-child::after {
+  border: 0 none;
+}
+
+.tree li:last-child::before {
+  border-right: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 0 5px 0 0;
+}
+
+.tree li:first-child::after {
+  border-radius: 5px 0 0 0;
+}
+
+.tree ul ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 2px solid rgba(255, 255, 255, 0.7);
+  width: 0;
+  height: 20px;
+}
+
+/* Thẻ Card View Only */
+.member-card.view-only {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: 2px solid white;
+  border-radius: 12px;
+  padding: 10px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.member-card.view-only img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #fff;
+  margin-bottom: 5px;
+  background: #ddd;
 }
 
-.tree-node span {
-  font-weight: 600;
+/* Vợ chồng */
+.spouse-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  position: relative;
+}
+
+.spouse-connector {
+  height: 3px;
+  width: 40px;
+  background: linear-gradient(90deg, transparent, #ff4d4f, transparent);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.spouse-connector::after {
+  content: '❤';
+  color: #ff4d4f;
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+}
+
+.loading-text {
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+  margin-top: 50px;
+}
+
+.empty-state {
+  text-align: center;
+  color: white;
+  margin-top: 50px;
 }

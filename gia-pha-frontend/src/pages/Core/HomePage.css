@@ -1,51 +1,107 @@
+/* src/pages/Core/HomePage.css */
+
 .homepage {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  /* Nền màu xanh dương hiện đại (gradient) */
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   color: white;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Font chữ hiện đại hơn */
+
+  /* --- TẠO NỀN ĐỘNG HIỆN ĐẠI (Magic happens here) --- */
+  /* Kết hợp nhiều màu: Xanh dương, Tím, Hồng, Cam nhẹ */
+  background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #4b134f, #c94b4b);
+  background-size: 400% 400%;
+  /* Phóng to nền để tạo hiệu ứng trôi */
+  animation: gradientBG 15s ease infinite;
+  /* Chuyển động mượt mà trong 15s */
+  position: relative;
+  overflow: hidden;
+  /* Ẩn các phần thừa */
 }
 
-/* Header riêng của trang Home (cho người chưa đăng nhập) */
+/* Định nghĩa chuyển động của nền */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Header - Thêm hiệu ứng kính mờ (Glassmorphism) */
 .home-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 3rem;
-  background-color: transparent;
+
+  /* Hiệu ứng kính mờ */
+  background: rgba(255, 255, 255, 0.05);
+  /* Màu trắng trong suốt rất nhẹ */
+  backdrop-filter: blur(10px);
+  /* Làm mờ nền phía sau header */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* Viền mờ */
+
   width: 100%;
   box-sizing: border-box;
+  z-index: 10;
 }
 
 .home-logo {
   font-size: 1.75rem;
+  font-weight: 700;
+  /* Đậm hơn chút */
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* Bóng chữ nhẹ */
+}
+
+.homepage-logo-img {
+  height: 45px;
+  /* To hơn chút */
+  width: auto;
+  margin-right: 10px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+  /* Logo phát sáng nhẹ */
+}
+
+/* Link Tài khoản */
+.home-account-link {
+  font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
   color: white;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
+  padding: 0.6rem 1.2rem;
 
-/* Link "Tài khoản" sẽ trỏ đến trang Đăng nhập */
-.home-account-link {
-  font-size: 1rem;
-  font-weight: 500;
-  text-decoration: none;
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
-  transition: all 0.3s;
+  /* Style nút kính */
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  border-radius: 30px;
+  transition: all 0.3s ease;
 }
 
 .home-account-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  /* Nhảy lên nhẹ khi hover */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Phần nội dung chính */
@@ -54,31 +110,47 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Canh lề trái giống trong hình */
   align-items: flex-start;
   padding: 0 10%;
-  /* Canh lề 2 bên */
+  z-index: 5;
+  /* Đảm bảo nội dung nằm trên nền */
 }
 
 .home-content h1 {
-  font-size: 3.5rem;
-  font-weight: 700;
+  font-size: 4rem;
+  /* Chữ to hơn */
+  font-weight: 800;
   margin-bottom: 1.5rem;
-  line-height: 1.2;
+  line-height: 1.1;
+
+  /* Gradient text (Chữ màu gradient nhẹ trên nền tối) */
+  background: -webkit-linear-gradient(#fff, #e0e0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Hoặc nếu muốn chữ trắng bóng đơn giản thì dùng text-shadow */
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .home-content p {
-  font-size: 1.2rem;
-  color: #e0e0e0;
-  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.9);
+  /* Trắng hơi mờ để dịu mắt */
+  margin-bottom: 0.8rem;
   line-height: 1.6;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .home-content .subtitle {
-  margin-bottom: 2.5rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  /* Chữ mỏng thanh lịch */
+  margin-bottom: 3rem;
+  font-style: italic;
+  opacity: 0.9;
 }
 
-/* Nút bấm */
+/* Khu vực nút bấm */
 .home-actions {
   display: flex;
   gap: 1.5rem;
@@ -86,35 +158,62 @@
 }
 
 .home-btn {
-  padding: 0.8rem 2rem;
+  padding: 1rem 2.5rem;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
-  border-radius: 5px;
-  /* Giống trong hình */
-  transition: all 0.3s ease;
+  border-radius: 50px;
+  /* Bo tròn hoàn toàn */
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+  /* Chữ in hoa */
+  letter-spacing: 1px;
+  /* Khoảng cách chữ */
+  position: relative;
+  overflow: hidden;
 }
 
-/* Nút Đăng kí */
+/* Nút Đăng kí - Nổi bật nhất */
 .btn-register {
   background-color: white;
-  color: #007bff;
-  border: 2px solid white;
+  color: #2c5364;
+  /* Màu chữ tối trùng với nền để dễ đọc */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .btn-register:hover {
-  background-color: transparent;
-  color: white;
+  background-color: #f0f0f0;
+  transform: translateY(-3px);
+  /* Nút bay lên */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  /* Bóng đổ sâu hơn */
 }
 
-/* Nút Đăng nhập */
+/* Nút Đăng nhập - Trong suốt */
 .btn-login {
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.1);
   color: white;
-  border: 2px solid white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
 }
 
 .btn-login:hover {
-  background-color: white;
-  color: #007bff;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-color: white;
+  transform: translateY(-3px);
+}
+
+/* --- Hiệu ứng bổ sung (Optional) --- */
+/* Thêm một lớp phủ noise (nhiễu hạt) nhẹ để trông giống ảnh nghệ thuật hơn */
+.homepage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
 }

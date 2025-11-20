@@ -1,100 +1,148 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './EventPage.css';
-
-// ----- Dữ liệu giả lập -----
-// Dùng YYYY-MM-DD làm key để dễ tra cứu
-const mockEvents = {
-  '2025-10-17': [
-    { id: 1, title: 'Ngày giỗ Albert Einstein' },
-  ],
-  '2025-10-09': [
-    { id: 2, title: 'Sự kiện test 1' },
-    { id: 3, title: 'Sự kiện test 2' },
-  ],
-  '2025-10-24': [
-    { id: 4, title: 'Sự kiện test 3' },
-  ],
-};
-// ------------------------------
-
-// Hàm helper để format Date object -> 'YYYY-MM-DD'
-// (Dùng 'en-CA' cho ra định dạng chuẩn này)
-const formatDateKey = (date) => {
-  return date.toLocaleDateString('en-CA');
-};
+import apiClient from '../../services/api';
 
 function EventPage() {
-  // State để lưu ngày đang được chọn, mặc định là hôm nay
   const [date, setDate] = useState(new Date());
+  const [events, setEvents] = useState([]); // Danh sách tất cả sự kiện tải từ API
+  const [dayEvents, setDayEvents] = useState([]); // Sự kiện của ngày đang chọn
 
-  // State để lưu các sự kiện của ngày được chọn
-  const [dayEvents, setDayEvents] = useState(null);
+  // Lấy ID cây hiện tại
+  const currentTreeId = localStorage.getItem('currentTreeId');
 
-  // Hàm được gọi khi người dùng click vào 1 ngày trên lịch
-  const handleDayClick = (value) => {
-    // value là 1 Date object
-    setDate(value); // Cập nhật ngày được chọn
+  // 1. Tải sự kiện từ Server
+  useEffect(() => {
+    if (currentTreeId) {
+      fetchEvents();
+    }
+  }, [currentTreeId]);
 
-    // Format ngày thành key 'YYYY-MM-DD'
-    const dateKey = formatDateKey(value);
-
-    // Tìm sự kiện trong mock data
-    const events = mockEvents[dateKey];
-
-    if (events) {
-      setDayEvents(events);
-    } else {
-      setDayEvents(null); // Không có sự kiện
+  const fetchEvents = async () => {
+    try {
+      const res = await apiClient.get(`/events/tree/${currentTreeId}`);
+      setEvents(res.data);
+    } catch (error) {
+      console.error("Lỗi tải sự kiện:", error);
     }
   };
 
-  // Hàm xử lý khi nhấn nút "Thêm sự kiện"
-  const handleAddEvent = () => {
-    const selectedDay = date.toLocaleDateString('vi-VN');
-    alert(`Mở form thêm sự kiện cho ngày ${selectedDay}`);
-    // TODO: Mở Modal/Form để thêm sự kiện mới
+  // 2. Xử lý khi chọn ngày trên lịch
+  const handleDayClick = (value) => {
+    setDate(value);
+    filterEventsByDay(value, events);
+  };
+
+  // Hàm lọc sự kiện theo ngày
+  const filterEventsByDay = (selectedDate, allEvents) => {
+    // Chuyển ngày chọn về chuỗi YYYY-MM-DD để so sánh
+    const dateString = selectedDate.toLocaleDateString('en-CA'); // Format YYYY-MM-DD
+
+    const filtered = allEvents.filter(ev => {
+      // Chuyển ngày trong DB về chuỗi YYYY-MM-DD
+      const evDate = new Date(ev.date).toLocaleDateString('en-CA');
+      return evDate === dateString;
+    });
+
+    setDayEvents(filtered);
+  };
+
+  // Khi danh sách events thay đổi (lúc mới tải xong), tự động lọc cho ngày hôm nay
+  useEffect(() => {
+    if (events.length > 0) {
+      filterEventsByDay(date, events);
+    }
+  }, [events]);
+
+  // 3. Hàm thêm sự kiện (Dùng prompt đơn giản để test nhanh)
+  const handleAddEvent = async () => {
+    if (!currentTreeId) return alert("Chưa chọn cây gia phả!");
+
+    const title = prompt("Nhập tên sự kiện (VD: Giỗ ông nội):");
+    if (!title) return;
+
+    try {
+      await apiClient.post('/events', {
+        title: title,
+        date: date, // Lấy ngày đang chọn trên lịch
+        description: 'Tạo nhanh từ lịch',
+        treeId: currentTreeId
+      });
+
+      alert("Đã thêm sự kiện!");
+      fetchEvents(); // Tải lại danh sách
+      // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      alert("Lỗi thêm sự kiện");
+    }
+  };
+
+  // 4. Hàm xóa sự kiện
+  const handleDeleteEvent = async (id) => {
+    if (!window.confirm("Bạn chắc chắn muốn xóa?")) return;
+    try {
+      await apiClient.delete(`/events/${id}`);
+      fetchEvents(); // Tải lại
+      // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      alert("Lỗi xóa");
+    }
+  }
+
+  // Hàm render nội dung bên trong ô lịch (Tile Content)
+  // Để hiển thị dấu chấm đỏ nếu ngày đó có sự kiện
+  const tileContent = ({ date, view }) => {
+    if (view === 'month') {
+      const dateString = date.toLocaleDateString('en-CA');
+      // Kiểm tra xem ngày này có sự kiện nào không
+      const hasEvent = events.some(ev => new Date(ev.date).toLocaleDateString('en-CA') === dateString);
+
+      if (hasEvent) {
+        return <div style={{ height: '6px', width: '6px', background: 'red', borderRadius: '50%', margin: '0 auto' }}></div>;
+      }
+    }
   };
 
   return (
     <div className="event-page-container">
-
       {/* CỘT LỊCH */}
       <div className="calendar-container">
         <Calendar
-          onChange={setDate} // Dùng khi chọn ngày ở tháng khác
-          value={date} // Ngày đang được highlight
-          onClickDay={handleDayClick} // Hàm chính khi click 1 ngày
-          locale="vi-VN" // Tùy chọn: hiển thị tiếng Việt
+          onChange={setDate}
+          value={date}
+          onClickDay={handleDayClick}
+          tileContent={tileContent} // Hiển thị dấu chấm đỏ
+          locale="vi-VN"
         />
       </div>
 
-      {/* CỘT CHI TIẾT SỰ KIỆN */}
+      {/* CỘT CHI TIẾT */}
       <div className="event-details-panel">
         <div className="event-list-box">
-          <h3>
-            Sự kiện ngày: {date.toLocaleDateString('vi-VN')}
-          </h3>
+          <h3>Sự kiện ngày: {date.toLocaleDateString('vi-VN')}</h3>
 
-          {/* Hiển thị danh sách sự kiện nếu có */}
-          {dayEvents ? (
+          {dayEvents.length > 0 ? (
             dayEvents.map(event => (
-              <div key={event.id} className="event-item">
-                {event.title}
+              <div key={event._id} className="event-item" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>{event.title}</span>
+                <button
+                  onClick={() => handleDeleteEvent(event._id)}
+                  style={{ background: 'none', border: 'none', color: 'red', cursor: 'pointer' }}
+                >
+                  X
+                </button>
               </div>
             ))
           ) : (
-            // Thông báo nếu không có sự kiện
-            <p className="no-events">Không có sự kiện nào trong ngày này.</p>
+            <p className="no-events">Không có sự kiện nào.</p>
           )}
         </div>
 
         <button className="add-event-btn" onClick={handleAddEvent}>
-          Thêm sự kiện
+          + Thêm sự kiện cho ngày này
         </button>
       </div>
-
     </div>
   );
 }

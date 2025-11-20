@@ -1,140 +1,108 @@
+/* src/pages/Core/EditMemberPage.css */
 .edit-member-page {
   display: flex;
   max-width: 1000px;
-  margin: 2rem auto;
-  /* Canh giữa trang */
-  padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  gap: 2.5rem;
-  /* Khoảng cách giữa 2 cột */
+  margin: 3rem auto;
+  padding: 2.5rem;
+  gap: 3rem;
+
+  /* Glass Card */
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
-/* Cột trái: Ảnh đại diện */
+/* Cột trái */
 .edit-member-avatar {
   flex-basis: 250px;
-  /* Cố định chiều rộng cột trái */
   text-align: center;
 }
 
 .avatar-preview {
+  /* 1. Kích thước cố định (Hình vuông) */
   width: 200px;
   height: 200px;
+
+  /* 2. Bo tròn hoàn toàn */
   border-radius: 50%;
-  /* Bo tròn ảnh */
+
+  /* 3. QUAN TRỌNG NHẤT: Cắt ảnh để lấp đầy khung, không bị méo */
   object-fit: cover;
-  border: 3px solid #eee;
-  margin-bottom: 1rem;
+
+  /* --- Các style trang trí thêm --- */
+  border: 5px solid white;
+  /* Viền trắng cho nổi */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  /* Bóng đổ nhẹ */
+  margin: 0 auto 1.5rem;
+  /* Canh giữa và cách nút bên dưới */
+  display: block;
+  /* Đảm bảo là khối block để canh giữa ăn margin auto */
+
+  /* Màu nền phòng khi ảnh là PNG trong suốt hoặc chưa tải được */
+  background-color: #e0e0e0;
 }
 
 .avatar-change-btn {
   display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 0.6rem 1.2rem;
+  background: #f0f0f0;
+  border-radius: 20px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  transition: background 0.3s;
 }
 
 .avatar-change-btn:hover {
-  background-color: #e0e0e0;
+  background: #e0e0e0;
 }
 
-/* Ẩn input[type=file] mặc định */
-.edit-member-avatar input[type="file"] {
-  display: none;
-}
-
-/* Cột phải: Form thông tin */
+/* Cột phải */
 .edit-member-form {
   flex-grow: 1;
-  /* Cột phải chiếm hết phần còn lại */
 }
 
 .edit-member-form h1 {
+  color: #2c3e50;
   margin-top: 0;
-  margin-bottom: 2rem;
-  font-weight: 600;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.edit-member-form form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.form-row {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.form-group {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group.full-width {
-  width: 100%;
-}
-
-.form-group label {
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #333;
-}
-
+/* Các input thừa hưởng style từ Auth.css nếu muốn, hoặc viết lại cho chắc */
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.8rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  border-radius: 8px;
+  background: #fff;
   font-size: 1rem;
-  font-family: inherit;
 }
 
 .form-group textarea {
-  min-height: 150px;
-  resize: vertical;
+  min-height: 120px;
 }
 
-.form-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  justify-content: flex-end;
-  /* Nút bấm dồn về bên phải */
-}
-
-.form-actions button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
+/* Nút bấm */
 .btn-save {
-  background-color: #337ab7;
+  background: linear-gradient(90deg, #11998e, #38ef7d);
+  /* Màu xanh lá hiện đại */
   color: white;
-}
-
-.btn-save:hover {
-  background-color: #286090;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(56, 239, 125, 0.3);
 }
 
 .btn-cancel {
-  background-color: #f0f0f0;
-  color: #333;
+  background: #fff;
   border: 1px solid #ccc;
-}
-
-.btn-cancel:hover {
-  background-color: #e0e0e0;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  margin-right: 10px;
 }

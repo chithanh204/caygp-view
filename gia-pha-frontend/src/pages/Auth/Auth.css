@@ -1,101 +1,89 @@
-/* Dùng chung cho cả trang đăng nhập và đăng ký */
+/* src/pages/Auth/Auth.css */
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 90vh;
-  /* Canh giữa màn hình */
-  background-color: #f9f9f9;
-  /* Màu nền trang web giả lập */
+  /* Nền đã có ở body, ở đây để trong suốt */
+  background: transparent;
 }
 
-/* Chiếc hộp chứa form */
 .auth-form-box {
-  padding: 2.5rem;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  /* Bo góc */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   width: 400px;
+  padding: 3rem;
+
+  /* Glassmorphism Card */
+  background: rgba(255, 255, 255, 0.85);
+  /* Trắng đục 85% */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+
   text-align: center;
 }
 
 .auth-form-box h1 {
-  margin-top: 0;
+  color: #333;
   margin-bottom: 2rem;
-  font-size: 2rem;
-  font-weight: 600;
 }
 
-/* Form */
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  /* Khoảng cách giữa các trường input */
-}
-
-.form-group {
-  text-align: left;
-  /* Canh lề trái cho label */
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #444;
+  text-align: left;
 }
 
 .form-group input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.8rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  /* Quan trọng để padding không làm vỡ layout */
-  font-size: 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s;
 }
 
-/* CSS cho checkbox "Lưu Mật Khẩu"  */
-.form-options {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
+.form-group input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+  outline: none;
 }
 
-.form-options label {
-  margin-bottom: 0;
-  /* Ghi đè lại margin của .form-group label */
-  font-weight: 400;
-  font-size: 0.9rem;
-}
-
-/* Nút bấm */
 .auth-button {
-  padding: 0.75rem;
-  background-color: #337ab7;
-  /* Màu xanh dương cơ bản */
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  transition: transform 0.2s;
 }
 
 .auth-button:hover {
-  background-color: #286090;
+  transform: translateY(-2px);
 }
 
-/* Các link điều hướng bên dưới */
 .auth-links {
   margin-top: 1.5rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   font-size: 0.9rem;
+}
+
+.auth-links a {
+  color: #007bff;
+  font-weight: 500;
 }

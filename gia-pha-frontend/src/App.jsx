@@ -14,11 +14,13 @@ import ViewTreePage from './pages/Core/ViewTreePage';
 import EditMemberPage from './pages/Core/EditMemberPage';
 import EventPage from './pages/Core/EventPage';
 import NotFoundPage from './pages/NotFoundPage';
+import ProfilePage from './pages/Core/ProfilePage';
 
 // Import các trang Admin
 import UserManagement from './pages/Admin/UserManagement';
 import RoleManagement from './pages/Admin/RoleManagement';
-// (Bạn có thể tạo thêm file AdminDashboard.jsx và AdminEventManagement.jsx)
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import EventManagement from './pages/Admin/EventManagement';
 
 function App() {
   return (
@@ -31,16 +33,20 @@ function App() {
       {/* Các trang cần đăng nhập, dùng Layout người dùng */}
       <Route element={<Layout />}>
         <Route path="/create-tree" element={<CreateTreePage />} />
-        <Route path="/view-tree/:treeId" element={<ViewTreePage />} />
         <Route path="/edit-member/:memberId" element={<EditMemberPage />} />
         <Route path="/events" element={<EventPage />} />
+        <Route path="/view-tree" element={<ViewTreePage />} />
+        <Route path="/view-tree/:treeId" element={<ViewTreePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Route>
 
       {/* Các trang Admin, dùng AdminLayout */}
       <Route path="/admin" element={<AdminLayout />}>
         {/* <Route path="dashboard" element={<AdminDashboard />} /> */}
+        <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="roles" element={<RoleManagement />} />
+        <Route path="events" element={<EventManagement />} />
         {/* <Route path="events" element={<AdminEventManagement />} /> */}
       </Route>
 

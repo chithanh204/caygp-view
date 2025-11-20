@@ -1,0 +1,61 @@
+:root {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Bảng màu chủ đạo */
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  /* Kính mờ */
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --text-color: #1a1a1a;
+  /* Chữ màu đen dịu cho các box trắng */
+  --primary-color: #007bff;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text-color);
+
+  /* --- NỀN GRADIENT ĐỘNG TOÀN CỤC --- */
+  /* Một phiên bản sáng hơn, nhẹ nhàng hơn HomePage một chút để dễ làm việc */
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Reset thẻ a */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Scrollbar đẹp hơn */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+}
